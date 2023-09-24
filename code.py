@@ -2,6 +2,7 @@ import time
 import board
 import busio
 import ipaddress
+import microcontroller
 import ssl
 import socketpool
 import wifi
@@ -82,10 +83,7 @@ pool = socketpool.SocketPool(wifi.radio)
 mqtt_client = MQTT.MQTT(
     broker=secrets["broker"],
     port=secrets["broker_port"],
-#     username=secrets["broker_user"],
-#     password=secrets["broker_pass"],
-    socket_pool=pool,
-#     ssl_context=ssl.create_default_context(),
+    socket_pool=pool
 )
 
 # Connect callback handlers to mqtt_client
@@ -99,17 +97,6 @@ mqtt_client.on_message = message
 print("Attempting to connect to %s" % mqtt_client.broker)
 mqtt_client.connect()
 
-# print("Subscribing to %s" % co2_topic)
-# mqtt_client.subscribe(co2_topic)
-
-# print("Publishing to %s" % co2_topic)
-# mqtt_client.publish(co2_topic, "Hello Broker!")
-
-# print("Unsubscribing from %s" % co2_topic)
-# mqtt_client.unsubscribe(co2_topic)
-
-# print("Disconnecting from %s" % mqtt_client.broker)
-# mqtt_client.disconnect()
 
 i2c = busio.I2C(scl=board.SCL1, sda=board.SDA1, frequency=100000)
 scd4x = adafruit_scd4x.SCD4X(i2c)
@@ -145,6 +132,8 @@ while run:
     except RuntimeError:
         print("Unable to read from sensor, retrying...")
         continue
+    except:
+        microcontroller.reset()
 
     print()
     print("Concentration Units (standard)")
