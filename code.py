@@ -129,9 +129,6 @@ while run:
     try:
         aqdata = pm25.read()
         print(aqdata)
-    except RuntimeError:
-        print("Unable to read from sensor, retrying...")
-        continue
     except:
         microcontroller.reset()
 
