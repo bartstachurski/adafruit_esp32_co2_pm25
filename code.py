@@ -1,6 +1,7 @@
 import time
 import board
 import busio
+import socketpool
 import microcontroller
 import wifi
 import adafruit_requests
