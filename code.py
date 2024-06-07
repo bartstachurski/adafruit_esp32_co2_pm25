@@ -22,7 +22,7 @@ def handle_exceptions(func):
             return func(*args, **kwargs)
         except Exception as e:
             print("Error:", str(e))
-            # microcontroller.reset()
+            microcontroller.reset()
     return wrapper
 
 @handle_exceptions
